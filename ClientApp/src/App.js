@@ -1,22 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
-
+import { LayoutApp } from 'components/layout';
+import { Login } from 'pages/auth';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+import { FetchData } from 'pages/guest';
+import { Routes } from 'constant';
+import { CreateCustomer } from 'pages/customers';
 import './custom.css'
 
-export default class App extends Component {
-  static displayName = App.name;
+library.add(fab, fas, far);
 
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-    );
-  }
-}
+const App = () => {
+  return (
+    <LayoutApp>
+      <Route exact path='/' component={Login} />
+      <Route path='/fetch-data' component={FetchData} />
+      <Route path={Routes.CREATE_CUSTOMER} component={CreateCustomer} />
+    </LayoutApp>
+  );
+};
+
+export default App;
