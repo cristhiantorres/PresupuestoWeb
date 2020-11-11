@@ -23,6 +23,9 @@ const NavMenu = () => {
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to={Routes.LIST_CUSTOMER}>Clientes</NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to={Routes.LIST_BUDGET}>Presupuestos</NavLink>
+              </NavItem>
             </ul>
           </Collapse>
         </Container>
