@@ -12,4 +12,9 @@ const ContainerApp = (props) => {
   );
 };
 
+ContainerApp.propTypes = {
+  children: PropTypes.element,
+  title: PropTypes.string,
+};
+
 export default ContainerApp;

@@ -8,7 +8,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { FetchData } from 'pages/guest';
 import { Routes } from 'constant';
-import { CreateCustomer } from 'pages/customers';
+import { CustomerCreate, CustomerList } from 'pages/customers';
 import './custom.css'
 
 library.add(fab, fas, far);
@@ -18,7 +18,8 @@ const App = () => {
     <LayoutApp>
       <Route exact path='/' component={Login} />
       <Route path='/fetch-data' component={FetchData} />
-      <Route path={Routes.CREATE_CUSTOMER} component={CreateCustomer} />
+      <Route path={Routes.CREATE_CUSTOMER} exact component={CustomerCreate} />
+      <Route path={Routes.LIST_CUSTOMER} exact component={CustomerList} />
     </LayoutApp>
   );
 };

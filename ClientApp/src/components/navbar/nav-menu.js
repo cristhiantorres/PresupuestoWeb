@@ -21,7 +21,7 @@ const NavMenu = () => {
                 <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch Data</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to={Routes.CREATE_CUSTOMER}>Crear clientes</NavLink>
+                <NavLink tag={Link} className="text-dark" to={Routes.LIST_CUSTOMER}>Clientes</NavLink>
               </NavItem>
             </ul>
           </Collapse>

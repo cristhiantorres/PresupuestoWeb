@@ -1,3 +1,4 @@
-import CreateCustomer from './create-customer';
+import CustomerCreate from './customer-create';
+import CustomerList from './customer-list';
 
-export { CreateCustomer };
+export { CustomerCreate, CustomerList };
