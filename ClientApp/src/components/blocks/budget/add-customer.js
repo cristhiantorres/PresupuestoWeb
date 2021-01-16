@@ -1,39 +1,35 @@
-import React from 'react';
-import { Card, CardBody } from 'reactstrap';
-import { FormSelect } from 'components/elements/forms';
+import React, { useState } from 'react';
+import { Card, CardBody, Label } from 'reactstrap';
+import AsyncSelect from 'react-select/async';
 import PropTypes from 'prop-types';
+import { getCustomers } from '../../../api/customer-api';
 
-const AddCustomer = ({ control, errors }) => {
+const AddCustomer = () => {
+  const handleInputChange = (newValue) => {
+    const value = newValue.replace(/\W/g, '');
+    return value;
+  };
+
+  const loadOptions = (value, callback) => {
+    if (value.length > 1) {
+      return getCustomers(value).then((res) => {
+        callback(res.map((item) => {
+          return {
+            value: item.id,
+            label: `${item.firstName} ${item.lastName} - ${item.documentNumber}`,
+          }
+        }));
+      })
+    }
+  }
   return (
     <Card>
       <CardBody>
-        <FormSelect
-          control={control}
-          id="cliente"
-          label="Elija un cliente"
-          options={[
-            {
-              value: 1,
-              label: '5370188 - Cristhian Torres',
-            },
-            {
-              value: 2,
-              label: '80055566-5 - Mariam S.A',
-            },
-            {
-              value: 3,
-              label: '80055445-8 - Distribuidora Gloria',
-            },
-            {
-              value: 4,
-              label: '80005566-8 - Aceites Raul',
-            },
-            {
-              value: 5,
-              label: '5370188 - Cristhian Torres',
-            },
-          ]}
-          error={errors}
+        <Label className="font-weight-bold">Cliente</Label>
+        <AsyncSelect
+          cacheOptions
+          loadOptions={loadOptions}
+          onInputChange={handleInputChange}
         />
       </CardBody>
     </Card>

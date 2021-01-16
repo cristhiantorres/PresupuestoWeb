@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PresupuestoWeb.Interface;
+using PresupuestoWeb.Services;
 
 namespace PresupuestoWeb
 {
@@ -22,6 +24,8 @@ namespace PresupuestoWeb
         {
 
             services.AddControllersWithViews();
+            services.AddTransient<ICustomerService, CustomerService>();            
+            services.AddSingleton<IConfiguration>(Configuration);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
