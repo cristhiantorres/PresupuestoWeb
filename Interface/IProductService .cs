@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace PresupuestoWeb.Interface
 {
-    public interface ICustomerService
+    public interface IProductService
     {
-        List<Customer> GetAll();
+        List<Product> GetAll();
     }
     
 }

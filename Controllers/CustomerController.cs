@@ -10,7 +10,7 @@ using PresupuestoWeb.Interface;
 namespace PresupuestoWeb.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CustomerController : ControllerBase
     {
         private readonly ILogger<CustomerController> _logger;
@@ -21,11 +21,10 @@ namespace PresupuestoWeb.Controllers
             _logger = logger;
         }
 
-        // GET: /customer/5
-        [HttpGet("{id}")]
-        public List<Customer> Get(string id)
-        {
-            List<Customer> customers = customerService.GetById(id); 
+        [HttpGet]
+        public List<Customer> GetAll()
+        {          
+            List<Customer> customers = customerService.GetAll(); 
             return customers;
         }
     }

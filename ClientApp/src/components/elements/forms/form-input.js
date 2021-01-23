@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form';
 import NumberFormat from 'react-number-format';
 import { Label, Input, InputGroupAddon, InputGroupText, FormFeedback, InputGroup } from 'reactstrap';
 
-const FormInput = ({ id, label, children, type, error, handleChange, className, onBlur, readOnly, setValue, control }, ref) => {
+const FormInput = ({ id, label, children, type, error, handleChange, className, onBlur, readOnly, value, control }, ref) => {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <>
@@ -16,16 +16,17 @@ const FormInput = ({ id, label, children, type, error, handleChange, className, 
     )}
     {type === 'textarea' ? (
       <Input
-        readOnly={readOnly}
-        className={`${!!error && 'is-invalid'} ${className}`}
-        as="textarea"
-        id={id}
-        type={type}
-        name={id}
-        ref={ref}
-        onChange={handleChange}
-        size="sm"
-        onBlur={onBlur}
+          readOnly={readOnly}
+          className={`${!!error && 'is-invalid'} ${className}`}
+          as="textarea"
+          id={id}
+          type={type}
+          name={id}
+          ref={ref}
+          onChange={handleChange}
+          size="sm"
+          onBlur={onBlur}
+          value={value}
       />
     ) : (type === 'file') ? (
       <Input
@@ -38,6 +39,7 @@ const FormInput = ({ id, label, children, type, error, handleChange, className, 
         size="sm"
         onChange={handleChange}
         onBlur={onBlur}
+        value={value}
       />
     ) : (type === 'password') ? (
       <InputGroup className="input-password">
@@ -52,6 +54,7 @@ const FormInput = ({ id, label, children, type, error, handleChange, className, 
             size="sm"
             onChange={handleChange}
             onBlur={onBlur}
+            value={value}
           />
         ) : (
           <Input
@@ -64,6 +67,7 @@ const FormInput = ({ id, label, children, type, error, handleChange, className, 
             size="sm"
             onChange={handleChange}
             onBlur={onBlur}
+            value={value}
           />
         )}
         <InputGroupAddon addonType="append" onClick={() => setShowPassword(!showPassword)}>
@@ -84,6 +88,7 @@ const FormInput = ({ id, label, children, type, error, handleChange, className, 
         size="sm"
         onChange={handleChange}
         onBlur={onBlur}
+        value={value}
       />
     ) : (type === 'phone') ? (
         <Controller
@@ -105,7 +110,30 @@ const FormInput = ({ id, label, children, type, error, handleChange, className, 
             />
           )}
         />
-    ): (
+    ) : (type === 'amount') ? (
+      <Controller
+        control={control}
+        name={id}
+        render={({ onChange, onBlur, value, name, ref }) => (
+          <NumberFormat
+            readOnly={readOnly}
+            className={`form-control form-control-sm ${!!error && 'is-invalid'} ${className}`}
+            id={name}
+            label={label}
+            name={name}
+            ref={ref}
+            value={value}
+            onBlur={onBlur}
+            onValueChange={(values) => {
+              const { formattedValue, value } = values;
+              handleChange(value);
+            }}
+            thousandSeparator={'.'}
+            decimalSeparator={','}
+          />
+      )}
+    />
+    ) : (
       <Input
         readOnly={readOnly}
         className={`${!!error && 'is-invalid'} ${className}`}
@@ -116,6 +144,7 @@ const FormInput = ({ id, label, children, type, error, handleChange, className, 
         size="sm"
         onChange={handleChange}
         onBlur={onBlur}
+        value={value}
       />
     )}
     <FormFeedback type="invalid">{error?.message}</FormFeedback>

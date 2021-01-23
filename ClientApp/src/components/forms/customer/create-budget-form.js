@@ -14,9 +14,6 @@ const CreateBudgetForm = ({ onSubmit, customers, articles }) => {
       <Col>
         <AddArticle control={control} errors={errors} />
       </Col>
-      <Col md={12} className="mt-2">
-        <Button>Generar</Button>
-      </Col>
     </Row>
   );
 };

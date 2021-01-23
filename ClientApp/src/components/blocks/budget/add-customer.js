@@ -1,36 +1,68 @@
-import React, { useState } from 'react';
-import { Card, CardBody, Label } from 'reactstrap';
-import AsyncSelect from 'react-select/async';
+import React from 'react';
+import { Card, CardBody, Col, Row, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { getCustomers } from '../../../api/customer-api';
+import { useCustomers } from 'hooks/customer-hook';
+import { FormSelect } from 'components/elements/forms';
+import { useStateValue } from 'state-provider';
+import { SET_CUSTOMER } from 'reducer';
+import { addBudget } from 'api/budget-api';
 
-const AddCustomer = () => {
-  const handleInputChange = (newValue) => {
-    const value = newValue.replace(/\W/g, '');
-    return value;
+const AddCustomer = ({ control }) => {
+  const [customers] = useCustomers([]);
+  const [{ budget }, dispatch] = useStateValue();
+  const total = budget.items.reduce((prev, curr) => prev + curr.total, 0);
+  const onChange = (e) => {
+    dispatch({
+      type: SET_CUSTOMER,
+      item: e.value,
+    });
   };
 
-  const loadOptions = (value, callback) => {
-    if (value.length > 1) {
-      return getCustomers(value).then((res) => {
-        callback(res.map((item) => {
-          return {
-            value: item.id,
-            label: `${item.firstName} ${item.lastName} - ${item.documentNumber}`,
-          }
-        }));
+  const onCreateBudget = () => {
+    const data = {
+      customerId: budget.customer,
+      total,
+      details: budget.items.map((item) => {
+        return {
+          productId: item.id,
+          description: item.description,
+          price: item.price,
+          total: item.total,
+          quantity: item.quantity,
+        }
       })
     }
+    console.log('data', data);
+    addBudget(data).then((res) => {
+      console.log('res', res);
+    }).catch((err) => {
+      console.error('error', err);
+    });
   }
+
   return (
     <Card>
       <CardBody>
-        <Label className="font-weight-bold">Cliente</Label>
-        <AsyncSelect
-          cacheOptions
-          loadOptions={loadOptions}
-          onInputChange={handleInputChange}
-        />
+        <Row>
+          <Col md={12}>
+            <FormSelect
+              label="Cliente"
+              id="cliente"
+              handleChange={onChange}
+              value={budget.customer}
+              control={control}
+              options={customers.map((item) => {
+                return {
+                  label: `${item.firstName} ${item.lastName} | ${item.documentNumber}`,
+                  value: `${item.id}`
+                }
+              })}
+            />
+          </Col>
+          <Col md={12}>
+            <Button className="my-3" onClick={() => onCreateBudget()}>Generar</Button>
+          </Col>
+        </Row>
       </CardBody>
     </Card>
   );
