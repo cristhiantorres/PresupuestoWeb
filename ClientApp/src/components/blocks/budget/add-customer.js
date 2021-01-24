@@ -6,11 +6,15 @@ import { FormSelect } from 'components/elements/forms';
 import { useStateValue } from 'state-provider';
 import { SET_CUSTOMER } from 'reducer';
 import { addBudget } from 'api/budget-api';
+import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
 const AddCustomer = ({ control }) => {
   const [customers] = useCustomers([]);
   const [{ budget }, dispatch] = useStateValue();
   const total = budget.items.reduce((prev, curr) => prev + curr.total, 0);
+  const history = useHistory();
+
   const onChange = (e) => {
     dispatch({
       type: SET_CUSTOMER,
@@ -28,15 +32,20 @@ const AddCustomer = ({ control }) => {
           description: item.description,
           price: item.price,
           total: item.total,
-          quantity: item.quantity,
+          quantity: parseInt(item.quantity),
         }
       })
     }
+
     console.log('data', data);
     addBudget(data).then((res) => {
-      console.log('res', res);
+      if (res === 0) {
+        toast('No se guardo el presupuesto. Ocurrio un error');
+      } else {
+        history.push(`/presupuestos/ver/${res}`);
+      }
     }).catch((err) => {
-      console.error('error', err);
+      toast('No se guardo el presupuesto. Ocurrio un error');
     });
   }
 

@@ -10,7 +10,7 @@ import { FetchData } from 'pages/guest';
 import { Routes } from 'constant';
 import { CustomerCreate, CustomerList } from 'pages/customers';
 import './custom.css'
-import { BudgetCreate, BudgetList } from 'pages/budgets';
+import { BudgetCreate, BudgetList, BudgetShow } from 'pages/budgets';
 
 library.add(fab, fas, far);
 
@@ -18,11 +18,11 @@ const App = () => {
   return (
     <LayoutApp>
       <Route exact path='/' component={Login} />
-      <Route path='/fetch-data' component={FetchData} />
       <Route path={Routes.CREATE_CUSTOMER} exact component={CustomerCreate} />
       <Route path={Routes.LIST_CUSTOMER} exact component={CustomerList} />
       <Route path={Routes.LIST_BUDGET} exact component={BudgetList} />
       <Route path={Routes.CREATE_BUDGET} exact component={BudgetCreate} />
+      <Route path={Routes.SHOW_BUDGET} component={BudgetShow} />
     </LayoutApp>
   );
 };

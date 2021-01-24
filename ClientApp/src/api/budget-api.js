@@ -8,3 +8,13 @@ export const addBudget = async (budget) => {
   const data = await response.data;
   return data;
 };
+
+/**
+ * Obtiene presupuesto por id.
+ * @param {number} id
+ */
+export const getBudgetById = async (id) => {
+  const response = await apiInstance.get(`/budget/${id}`);
+  const data = await response.data;
+  return data;
+};

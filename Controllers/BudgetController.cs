@@ -28,5 +28,12 @@ namespace PresupuestoWeb.Controllers
             int budgetId = budgetService.Add(budget); 
             return budgetId;
         }
+
+        // GET: /budget/5
+        [HttpGet("{id}")]
+        public Budget Get(int id)
+        {
+            return budgetService.GetById(id);
+        }
     }
 }

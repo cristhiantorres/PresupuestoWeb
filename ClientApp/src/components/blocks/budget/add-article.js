@@ -24,17 +24,19 @@ const AddArticle = ({ control, errors }) => {
   }
 
   const addToBudget = () => {
-    const item = {
-      id: product.id,
-      description: product.name,
-      price,
-      quantity,
-      total: price * quantity,
-    };
-    dispatch({
-      type: ADD_TO_BUDGET,
-      item,
-    });
+    if (product) {
+      const item = {
+        id: product.id,
+        description: product.name,
+        price,
+        quantity,
+        total: price * quantity,
+      };
+      dispatch({
+        type: ADD_TO_BUDGET,
+        item,
+      });
+    }
   }
   return (
     <Card>
