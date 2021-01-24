@@ -7,6 +7,7 @@ namespace PresupuestoWeb.Interface
     {
         int Add(Budget budget);
         Budget GetById(int id);
+        List<Budget> GetAll();
     }
     
 }

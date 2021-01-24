@@ -113,5 +113,43 @@ namespace PresupuestoWeb.Services
                 return new Budget();
             }
         }
-    }
+
+        public List<Budget> GetAll()
+        {
+            try
+            {
+                Service1SoapClient service = new Service1SoapClient(Service1SoapClient.EndpointConfiguration.Service1Soap,
+                        "http://15.222.249.125:1501/ws_technical/Service1.asmx");
+                object[] argumentos = new object[1];
+                var data = service.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_CONSULTA_PRESUPUESTO", argumentos).Any1;
+                DataSet dataSet = ConvertUtils.XmlToDataSet(data.InnerXml);
+                if (dataSet.Tables.Count > 0)
+                {
+                    List<Budget> budgets = new List<Budget>();
+                    foreach (DataRow row in dataSet.Tables[0].Rows)
+                    {
+                        Budget budget = new Budget
+                        {
+                            Id = Convert.ToInt32(row.ItemArray[0].ToString()),
+                            CustomerId = row.ItemArray[1].ToString(),
+                            Total = Convert.ToInt32(row.ItemArray[2].ToString()),
+                            Date = Convert.ToDateTime(row.ItemArray[3]),
+                            CustomerName = row.ItemArray[4].ToString(),
+                        };
+
+                        budgets.Add(budget);
+                    }
+                    return budgets;
+                }
+
+                return new List<Budget>();
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine("Error " + e);
+                return new List<Budget>();
+            }
+        }
+    }      
 }

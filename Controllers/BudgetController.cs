@@ -35,5 +35,12 @@ namespace PresupuestoWeb.Controllers
         {
             return budgetService.GetById(id);
         }
+
+        // GET: /budget
+        [HttpGet]
+        public List<Budget> Get()
+        {
+            return budgetService.GetAll();
+        }
     }
 }
