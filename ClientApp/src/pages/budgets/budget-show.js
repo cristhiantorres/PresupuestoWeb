@@ -3,7 +3,7 @@ import { ContainerApp } from 'components/container';
 import { Button, Card, CardBody, Col, Row } from 'reactstrap';
 import { formatMoney } from 'utils/format-util';
 import { useBudgetById } from 'hooks/budget-hook';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Loader } from 'components/elements/status';
 
 const BudgetShow = () => {
@@ -26,7 +26,7 @@ const BudgetShow = () => {
                   </ul>
                 </Col>
                 <Col>
-                  <Button className="mb-2">Generar PDF</Button>
+                  <Link className="btn btn-default mb-2" to={`/presupuestos/pdf/${data.id}`}>Generar PDF</Link>
                   <Button>Generar PDF y Enviar</Button>
                 </Col>
               </Row>

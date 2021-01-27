@@ -2,6 +2,7 @@ import React from 'react';
 import { Table } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { formatDate, formatMoney } from 'utils/format-util';
+import { Link } from 'react-router-dom';
 
 const BudgetTable = ({ items }) => {
   return (
@@ -21,6 +22,9 @@ const BudgetTable = ({ items }) => {
             <td>{item.customerName}</td>
             <td>{formatMoney(item.total)}</td>
             <td>{formatDate(item.date)}</td>
+            <td>
+              <Link to={`/presupuestos/ver/${item.id}`}>Ver</Link>
+            </td>
           </tr>
         ))}
       </tbody>

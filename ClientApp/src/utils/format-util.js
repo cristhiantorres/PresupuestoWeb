@@ -13,6 +13,20 @@ export const formatMoney = (str) => {
  */
 export const formatDate = (str) => {
   const d = new Date(str);
-  console.log(d.getDay());
-  return `${d.getDay()}/${d.getMonth()}/${d.getFullYear()}`;
+  return d.toLocaleString();
+}
+
+/**
+ * Formato de fecha con nombres de meses.
+ * @param {string} str
+ */
+export const formatDateString = (str) => {
+  const date = new Date(str);
+  const months = [
+    "Enero", "Febrero", "Marzo",
+    "Abril", "Mayo", "Junio", "Julio",
+    "Agosto", "Septiembre", "Octubre",
+    "Noviembre", "Diciembre"
+  ];
+  return date.getDate() + ' de ' + months[date.getMonth()] + ' de ' + date.getFullYear();
 }

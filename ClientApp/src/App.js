@@ -6,11 +6,10 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
-import { FetchData } from 'pages/guest';
 import { Routes } from 'constant';
 import { CustomerCreate, CustomerList } from 'pages/customers';
 import './custom.css'
-import { BudgetCreate, BudgetList, BudgetShow } from 'pages/budgets';
+import { BudgetCreate, BudgetList, BudgetPdfView, BudgetShow } from 'pages/budgets';
 
 library.add(fab, fas, far);
 
@@ -23,6 +22,7 @@ const App = () => {
       <Route path={Routes.LIST_BUDGET} exact component={BudgetList} />
       <Route path={Routes.CREATE_BUDGET} exact component={BudgetCreate} />
       <Route path={Routes.SHOW_BUDGET} component={BudgetShow} />
+      <Route path={Routes.BUDGET_PDF} component={BudgetPdfView} />
     </LayoutApp>
   );
 };
