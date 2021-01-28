@@ -3,8 +3,10 @@ import { ContainerApp } from 'components/container';
 import { Button, Card, CardBody, Col, Row } from 'reactstrap';
 import { formatMoney } from 'utils/format-util';
 import { useBudgetById } from 'hooks/budget-hook';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Loader } from 'components/elements/status';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { BudgetPdf } from 'components/pdf';
 
 const BudgetShow = () => {
   const { id } = useParams();
@@ -14,27 +16,48 @@ const BudgetShow = () => {
     <ContainerApp title="Ver Presupuesto">
       {!isLoading && data ? (
       <Row>
-        <Col md={6}>
+        <Col md={7}>
           <Card>
             <CardBody>
               <Row>
-                <Col>
-                  <ul className="list-unstyled">
-                    <li><b>#{data.id}</b></li>
-                    <li>Cliente: <b>{data.customerName}</b></li>
-                    <li>Total: <b className="total">{formatMoney(data.total)}</b></li>
+                <Col md={8}>
+                  <ul className="list-unstyled details">
+                    <li>
+                      <span>Nro. Presupuesto</span>
+                      <b>{data.id.toString().padStart(8, '0')}</b></li>
+                    <li>
+                      <span>Cliente</span>
+                      <b>{data.customerName}</b>
+                    </li>
+                    <li>
+                      <span>Correo</span>
+                      <b>{data.customerEmail || ''}</b>
+                    </li>
                   </ul>
                 </Col>
                 <Col>
-                  <Link className="btn btn-default mb-2" to={`/presupuestos/pdf/${data.id}`}>Generar PDF</Link>
-                  <Button>Generar PDF y Enviar</Button>
+                  <ul className="list-unstyled details">
+                    <li>
+                      <span>Total</span>
+                      <b className="total">{formatMoney(data.total)}</b>
+                    </li>
+                  </ul>
+                  { data.details && (
+                    <PDFDownloadLink
+                      document={<BudgetPdf budget={data} />}
+                      fileName={`presupuesto-${data.id}.pdf`}
+                      className="btn btn-primary btn-block mb-2">
+                        {({ blob, url, loading, error }) => (loading ? 'Cargando documento...' : 'Descargar PDF')}
+                    </PDFDownloadLink>
+                  )}
+                  <Button className="btn-block">Enviar presupuesto</Button>
                 </Col>
               </Row>
             </CardBody>
           </Card>
-          <hr />
         </Col>
         <Col md={12}>
+          <hr />
           <h5>Listado de articulos.</h5>
           <table className="table table-bordered table-sm">
             <thead>
@@ -45,15 +68,21 @@ const BudgetShow = () => {
               <th>Total</th>
             </thead>
             <tbody>
-              {data.details.map((item, key) => (
-                <tr key={key}>
-                  <td>{item.id}</td>
-                  <td>{item.description}</td>
-                  <td className="text-center">{formatMoney(item.price)}</td>
-                  <td className="text-center">{item.quantity}</td>
-                  <td className="text-center">{formatMoney(item.total)}</td>
+              {data.details ? (
+                data.details.map((item, key) => (
+                  <tr key={key}>
+                    <td>{item.id}</td>
+                    <td>{item.description}</td>
+                    <td className="text-center">{formatMoney(item.price)}</td>
+                    <td className="text-center">{item.quantity}</td>
+                    <td className="text-center">{formatMoney(item.total)}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="text-center">Sin registros</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </Col>

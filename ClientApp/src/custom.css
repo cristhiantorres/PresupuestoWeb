@@ -17,5 +17,16 @@ code {
   display: block;
 }
 .total {
-  font-size: 26px;
+  font-size: 20px;
+}
+
+.details > li {
+  margin-bottom: 5px;
+}
+.details > li > span {
+  text-transform: uppercase;
+  color: #3e3e3e;
+  font-weight: 500;
+  display: block;
+  font-size: 12px;
 }

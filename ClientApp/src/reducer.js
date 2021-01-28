@@ -1,9 +1,10 @@
-import { addToBudget, changeItemQuantity, removeItem, setCustomer } from "./actions/budget-action";
+import { addToBudget, changeItemQuantity, clearBudget, removeItem, setCustomer } from "./actions/budget-action";
 
 export const ADD_TO_BUDGET = 'ADD_TO_BUDGET';
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 export const CHANGE_ITEM_QUANTITY = 'CHANGE_ITEM_QUANTITY';
 export const SET_CUSTOMER = 'SET_CUSTOMER';
+export const CLEAR_BUDGET = 'CLEAR_BUDGET';
 
 export const initialState = {
   budget: JSON.parse(window.localStorage.getItem('budget')) || {
@@ -26,6 +27,9 @@ const reducer = (state, action) => {
     }
     case SET_CUSTOMER: {
       return setCustomer(action, state);
+    }
+    case CLEAR_BUDGET: {
+      return clearBudget(action, state);
     }
     default:
       return state;

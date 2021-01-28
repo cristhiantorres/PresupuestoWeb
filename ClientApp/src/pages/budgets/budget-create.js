@@ -33,18 +33,24 @@ const BudgetCreate = () => {
               <th>Acciones</th>
             </thead>
             <tbody>
-              {budget.items.map((item, key) => (
-                <tr key={key}>
-                  <td>{item.id}</td>
-                  <td>{item.description}</td>
-                  <td className="text-center">{formatMoney(item.price)}</td>
-                  <td className="text-center">{item.quantity}</td>
-                  <td className="text-center">{formatMoney(item.total)}</td>
-                  <td>
-                    <Button size="sm" color="danger" onClick={() => removeItem(item.id)}>Eliminar</Button>
-                  </td>
+              {budget.items ? (
+                budget.items.map((item, key) => (
+                  <tr key={key}>
+                    <td>{item.id}</td>
+                    <td>{item.description}</td>
+                    <td className="text-center">{formatMoney(item.price)}</td>
+                    <td className="text-center">{item.quantity}</td>
+                    <td className="text-center">{formatMoney(item.total)}</td>
+                    <td>
+                      <Button size="sm" color="danger" onClick={() => removeItem(item.id)}>Eliminar</Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6}>Sin registros</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </Col>

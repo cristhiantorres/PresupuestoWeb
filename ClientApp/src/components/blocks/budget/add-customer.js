@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardBody, Col, Row, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { useCustomers } from 'hooks/customer-hook';
 import { FormSelect } from 'components/elements/forms';
 import { useStateValue } from 'state-provider';
-import { SET_CUSTOMER } from 'reducer';
+import { CLEAR_BUDGET, SET_CUSTOMER } from 'reducer';
 import { addBudget } from 'api/budget-api';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import { getBudgetTotal } from 'utils/budget-util';
 
 const AddCustomer = ({ control }) => {
   const [customers] = useCustomers([]);
   const [{ budget }, dispatch] = useStateValue();
-  const total = budget.items.reduce((prev, curr) => prev + curr.total, 0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const total = getBudgetTotal(budget);
   const history = useHistory();
 
   const onChange = (e) => {
@@ -22,7 +24,20 @@ const AddCustomer = ({ control }) => {
     });
   };
 
+  const clearBudget = () => {
+    dispatch({
+      type: CLEAR_BUDGET
+    });
+  };
+
   const onCreateBudget = () => {
+    setButtonDisabled(true);
+    if (budget.items.length === 0) {
+      toast.error('No tiene detalles.');
+      setButtonDisabled(false);
+      return;
+    }
+
     const data = {
       customerId: budget.customer,
       total,
@@ -36,16 +51,17 @@ const AddCustomer = ({ control }) => {
         }
       })
     }
-
-    console.log('data', data);
     addBudget(data).then((res) => {
       if (res === 0) {
-        toast('No se guardo el presupuesto. Ocurrio un error');
+        toast.error('No se guardo el presupuesto. Ocurrio un error');
       } else {
+        clearBudget();
         history.push(`/presupuestos/ver/${res}`);
       }
+      setButtonDisabled(false);
     }).catch((err) => {
-      toast('No se guardo el presupuesto. Ocurrio un error');
+      toast.error('No se guardo el presupuesto. Ocurrio un error');
+      setButtonDisabled(false);
     });
   }
 
@@ -69,7 +85,9 @@ const AddCustomer = ({ control }) => {
             />
           </Col>
           <Col md={12}>
-            <Button className="my-3" onClick={() => onCreateBudget()}>Generar</Button>
+            <Button className="my-3" disabled={buttonDisabled} onClick={() => onCreateBudget()}>
+              {buttonDisabled ? 'Cargando...' : 'Generar'}
+            </Button>
           </Col>
         </Row>
       </CardBody>

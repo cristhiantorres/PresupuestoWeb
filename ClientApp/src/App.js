@@ -8,14 +8,17 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { Routes } from 'constant';
 import { CustomerCreate, CustomerList } from 'pages/customers';
-import './custom.css'
+import 'custom.css';
 import { BudgetCreate, BudgetList, BudgetPdfView, BudgetShow } from 'pages/budgets';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 library.add(fab, fas, far);
 
 const App = () => {
   return (
     <LayoutApp>
+      <ToastContainer />
       <Route exact path='/' component={Login} />
       <Route path={Routes.CREATE_CUSTOMER} exact component={CustomerCreate} />
       <Route path={Routes.LIST_CUSTOMER} exact component={CustomerList} />

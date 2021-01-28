@@ -5,6 +5,7 @@ import { formatMoney } from 'utils/format-util';
 import { useProducts } from 'hooks/product-hook ';
 import { ADD_TO_BUDGET } from 'reducer';
 import { useStateValue } from 'state-provider';
+import { getBudgetTotal } from 'utils/budget-util';
 
 const AddArticle = ({ control, errors }) => {
   const [{ budget }, dispatch] = useStateValue();
@@ -12,7 +13,7 @@ const AddArticle = ({ control, errors }) => {
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState(null);
-  const total = budget.items.reduce((prev, curr) => prev + curr.total, 0);
+  const total = getBudgetTotal(budget);
   const handleChange = (e) => {
     const product = data.find((item) => {
       return item.id === e.value;

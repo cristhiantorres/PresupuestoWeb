@@ -72,3 +72,19 @@ export const setCustomer = (action, state) => {
   window.localStorage.setItem('budget', JSON.stringify(state.budget));
   return state;
 }
+
+/**
+ * Limpiamos el presupuesto.
+ * @param {string[]} action
+ * @param {string[]} state
+ */
+export const clearBudget = (action, state) => {
+  const budget = {
+    customer: null,
+    items: [],
+  };
+
+  state = { ...state, budget: budget };
+  window.localStorage.setItem('budget', JSON.stringify(state.budget));
+  return state;
+}

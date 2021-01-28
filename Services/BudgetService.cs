@@ -82,6 +82,7 @@ namespace PresupuestoWeb.Services
                         Total = Convert.ToInt32(row.ItemArray[2].ToString()),
                         Date = Convert.ToDateTime(row.ItemArray[3]),
                         CustomerName = row.ItemArray[4].ToString(),
+                        CustomerEmail = row.ItemArray[5].ToString(),
                     };
 
 
