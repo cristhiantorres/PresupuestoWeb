@@ -1,8 +1,8 @@
-import { login } from 'api/auth-api';
-import { FormInput } from 'components/elements/forms';
 import React, { useState } from 'react';
+import { login } from 'api/auth-api';
+import { ButtonLoading, FormInput } from 'components/elements/forms';
 import { toast } from 'react-toastify';
-import { Button, FormGroup } from 'reactstrap';
+import { FormGroup } from 'reactstrap';
 import { SET_USER } from 'reducer';
 import { useStateValue } from 'state-provider';
 
@@ -10,8 +10,10 @@ const LoginForm = () => {
   const [, dispatch] = useStateValue();
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onLogin = () => {
+    setLoading(true);
     login(username, password).then((res) => {
       if (res === 1) {
         dispatch({
@@ -20,9 +22,11 @@ const LoginForm = () => {
         });
       }
       toast.error('Credenciales invalidas!');
+      setLoading(false);
     }).catch((error) => {
       toast.error('Ops ocurrio un error... !!');
       console.error('error', error);
+      setLoading(false);
     })
   };
 
@@ -44,7 +48,13 @@ const LoginForm = () => {
           handleChange = { (e) => setPassword(e.target.value)}
         />
       </FormGroup>
-      <Button type="submit" onClick={() => { onLogin()}} block>Ingresar</Button>
+      <ButtonLoading
+        type="submit"
+        isLoading={loading}
+        onClick={() => { onLogin()}}
+        block
+        text="Ingresar"
+      />
     </>
   );
 };
