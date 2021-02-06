@@ -11,14 +11,14 @@ namespace PresupuestoWeb.Services
 {
     public class ProductService : IProductService
     {
+        SoapService service = new SoapService();
         public List<Product> GetAll()
         {
             try
             {
-                Service1SoapClient service = new Service1SoapClient(Service1SoapClient.EndpointConfiguration.Service1Soap,
-                                                    "http://15.222.249.125:1501/ws_technical/Service1.asmx");
+                Service1SoapClient client = service.GetClient();
                 object[] argumentos = new object[3];
-                var data = service.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_CONSULTA_PRODUCTO", argumentos).Any1;
+                var data = client.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_CONSULTA_PRODUCTO", argumentos).Any1;
                 DataSet dataSet = ConvertUtils.XmlToDataSet(data.InnerXml);
                 List<Product> Products = new List<Product>();
                 if (dataSet.Tables.Count > 0)

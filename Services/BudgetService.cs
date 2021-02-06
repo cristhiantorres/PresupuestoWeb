@@ -9,16 +9,16 @@ namespace PresupuestoWeb.Services
 {
     public class BudgetService : IBudgetService
     {
+        SoapService service = new SoapService();
         public int Add(Budget budget)
         {
             try
             {
-                Service1SoapClient service = new Service1SoapClient(Service1SoapClient.EndpointConfiguration.Service1Soap,
-                                                    "http://15.222.249.125:1501/ws_technical/Service1.asmx");
+                Service1SoapClient client = service.GetClient();
                 object[] argumentos = new object[2];
                 argumentos[0] = budget.CustomerId;
                 argumentos[1] = budget.Total;
-                var data = service.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_INSERTAR_PRESUPUESTO", argumentos).Any1;
+                var data = client.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_INSERTAR_PRESUPUESTO", argumentos).Any1;
                 DataSet dataSet = ConvertUtils.XmlToDataSet(data.InnerXml);
                 int budgetId = 0;
                 if (dataSet.Tables.Count > 0)
@@ -46,7 +46,7 @@ namespace PresupuestoWeb.Services
                         argumentosD[3] = item.Quantity;
                         argumentosD[4] = item.Price;
                         argumentosD[5] = item.Total;
-                        var dataD = service.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_INS_PRESUPUESTO_DETALLE", argumentosD).Any1;
+                        var dataD = client.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_INS_PRESUPUESTO_DETALLE", argumentosD).Any1;
                         DataSet dataSetD = ConvertUtils.XmlToDataSet(dataD.InnerXml);
                     }
                     return budgetId;
@@ -64,11 +64,10 @@ namespace PresupuestoWeb.Services
         {
             try
             {
-                Service1SoapClient service = new Service1SoapClient(Service1SoapClient.EndpointConfiguration.Service1Soap,
-                                                    "http://15.222.249.125:1501/ws_technical/Service1.asmx");
+                Service1SoapClient client = service.GetClient();
                 object[] argumentos = new object[1];
                 argumentos[0] = id;
-                var data = service.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_PRESUPUESTO_POR_ID", argumentos).Any1;
+                var data = client.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_PRESUPUESTO_POR_ID", argumentos).Any1;
                 DataSet dataSet = ConvertUtils.XmlToDataSet(data.InnerXml);
 
                 if (dataSet.Tables.Count > 0)
@@ -89,7 +88,7 @@ namespace PresupuestoWeb.Services
                     // Detalles
                     object[] argumentosD = new object[1];
                     argumentos[0] = budget.Id;
-                    var dataD = service.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_PRESUPUESTO_DETALLES", argumentos).Any1;
+                    var dataD = client.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_PRESUPUESTO_DETALLES", argumentos).Any1;
                     DataSet dataSetD = ConvertUtils.XmlToDataSet(dataD.InnerXml);
                     List<BudgetDetails> details = new List<BudgetDetails>();
                     foreach (DataRow item in dataSetD.Tables[0].Rows)
@@ -119,10 +118,9 @@ namespace PresupuestoWeb.Services
         {
             try
             {
-                Service1SoapClient service = new Service1SoapClient(Service1SoapClient.EndpointConfiguration.Service1Soap,
-                        "http://15.222.249.125:1501/ws_technical/Service1.asmx");
+                Service1SoapClient client = service.GetClient();
                 object[] argumentos = new object[1];
-                var data = service.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_CONSULTA_PRESUPUESTO", argumentos).Any1;
+                var data = client.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_CONSULTA_PRESUPUESTO", argumentos).Any1;
                 DataSet dataSet = ConvertUtils.XmlToDataSet(data.InnerXml);
                 if (dataSet.Tables.Count > 0)
                 {

@@ -14,14 +14,14 @@ namespace PresupuestoWeb.Services
 {
     public class CustomerService : ICustomerService
     {
+        SoapService service = new SoapService();
         public List<Customer> GetAll()
         {
             try
             {
-                Service1SoapClient service = new Service1SoapClient(Service1SoapClient.EndpointConfiguration.Service1Soap,
-                                                    "http://15.222.249.125:1501/ws_technical/Service1.asmx");
+                Service1SoapClient client = service.GetClient();
                 object[] argumentos = new object[3];
-                var data = service.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_CONSULTA_CLIENTE", argumentos).Any1;
+                var data = client.DTcallProcedure("TECHNICAL.PKG_PRESUPUESTO.SP_CONSULTA_CLIENTE", argumentos).Any1;
                 DataSet dataSet = ConvertUtils.XmlToDataSet(data.InnerXml);
                 List<Customer> customers = new List<Customer>();
                 if (dataSet.Tables.Count > 0)

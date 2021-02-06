@@ -27,6 +27,7 @@ namespace PresupuestoWeb
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IBudgetService, BudgetService>();
+            services.AddTransient<IAuthService, AuthService>();
             services.AddSingleton<IConfiguration>(Configuration);
 
             // In production, the React files will be served from this directory
